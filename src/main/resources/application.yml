@@ -3,34 +3,34 @@ server:
 
 spring:
   application:
-    name: api-gateway
+    # O nome que aparecerá no Eureka
+    name: ecommerce-api-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      routes:
-        # Rota para Inventory Service
-        - id: inventory-service
-          uri: lb://inventory-service
-          predicates:
-            - Path=/api/inventory/**
-          filters:
-            - StripPrefix=1
-
-        # Rota para Order Service
-        - id: order-service
-          uri: lb://order-service
-          predicates:
-            - Path=/api/orders/**
-          filters:
-            - StripPrefix=1
+      # Propriedades NÃO DEPRECIADAS para o discovery locator
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+#      # Rota explícita para o inventory-service (MELHOR PRÁTICA)
+#        routes:
+#          - id: inventory-service-route
+#            uri: lb://inventory-service # O nome do serviço de destino no Eureka
+#            predicates:
+#              - Path=/inventory-service/**
+#            filters:
+#              - StripPrefix=1
 
 eureka:
+  # A configuração do cliente Eureka com a sintaxe CORRETA
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  # A configuração da instância Eureka
   instance:
     prefer-ip-address: true
 
@@ -38,4 +38,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: health,info,prometheus,gateway
