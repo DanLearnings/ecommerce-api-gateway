@@ -4,7 +4,7 @@ server:
 spring:
   application:
     # O nome que aparecerá no Eureka
-    name: ecommerce-api-gateway
+    name: api-gateway
   cloud:
     gateway:
       # Propriedades NÃO DEPRECIADAS para o discovery locator
